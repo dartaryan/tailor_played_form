@@ -854,37 +854,38 @@
 
 
 
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <img src="tailorplayed_logo.png" alt="TailorPlayed" class="hero-image">
+    </div>
+    
     <div class="container">
-        <div class="logo-container">
-            <img src="tailorplayed_logo.png" alt="TailorPlayed Logo" class="main-logo">
-        </div>
-        
         <h1>🪡 Tailor Played 🎲</h1>
         <p class="subtitle">טופס הזמנת משחק</p>
         
         <style>
-        .logo-container {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px 0;
+        .hero-section {
+            position: relative;
+            width: 100vw;
+            max-width: 100%;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            margin-bottom: 50px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #1E1229 0%, #2D1B3D 100%);
         }
         
-        .main-logo {
-            max-width: 600px;
+        .hero-image {
             width: 100%;
             height: auto;
-            filter: drop-shadow(0 4px 20px rgba(255, 217, 61, 0.3));
-            animation: logoGlow 4s ease-in-out infinite;
-        }
-        
-        @keyframes logoGlow {
-            0%, 100% { filter: drop-shadow(0 4px 20px rgba(255, 217, 61, 0.3)); }
-            50% { filter: drop-shadow(0 6px 30px rgba(255, 217, 61, 0.5)); }
+            display: block;
+            filter: drop-shadow(0 8px 30px rgba(255, 217, 61, 0.4));
         }
         
         @media (max-width: 768px) {
-            .logo-container { margin-bottom: 20px; padding: 15px 0; }
-            .main-logo { max-width: 100%; }
+            .hero-section { margin-bottom: 30px; }
         }
         
         h1 {
