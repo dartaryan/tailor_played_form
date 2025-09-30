@@ -163,6 +163,19 @@
                 inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
+        .main-title {
+            color: var(--gold-accent);
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            letter-spacing: -0.3px;
+            border: none;
+            padding: 0;
+            background: none;
+            text-shadow: -1px -1px 0 var(--dark-purple), 1px -1px 0 var(--royal-purple), -1px 1px 0var(--soft-purple), 1px 1px 0 var(--lavender-mist);
+        }
+
         .instructions-title {
             color: var(--ikea-yellow);
             font-size: 1.5rem;
@@ -860,7 +873,7 @@
     </div>
     
     <div class="container">
-        <h1>🪡 Tailor Played 🎲</h1>
+        <h5 class="main-title">🪡 Tailor Played 🎲</h5>
         <p class="subtitle">טופס הזמנת משחק</p>
         
         <style>
@@ -879,7 +892,6 @@
         .hero-image {
             width: 100%;
             height: auto;
-            display: block;
             object-fit: cover;
             filter: drop-shadow(0 8px 30px rgba(255, 217, 61, 0.4));
         }
