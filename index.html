@@ -855,10 +855,38 @@
 
 
     <div class="container">
+        <div class="logo-container">
+            <img src="tailorplayed_logo.png" alt="TailorPlayed Logo" class="main-logo">
+        </div>
+        
         <h1>🪡 Tailor Played 🎲</h1>
         <p class="subtitle">טופס הזמנת משחק</p>
         
         <style>
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+        
+        .main-logo {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 4px 20px rgba(255, 217, 61, 0.3));
+            animation: logoGlow 4s ease-in-out infinite;
+        }
+        
+        @keyframes logoGlow {
+            0%, 100% { filter: drop-shadow(0 4px 20px rgba(255, 217, 61, 0.3)); }
+            50% { filter: drop-shadow(0 6px 30px rgba(255, 217, 61, 0.5)); }
+        }
+        
+        @media (max-width: 768px) {
+            .logo-container { margin-bottom: 20px; padding: 15px 0; }
+            .main-logo { max-width: 100%; }
+        }
+        
         h1 {
             filter: grayscale(100%);
         }
@@ -1290,6 +1318,148 @@
         function generateJSON() {
             const form = document.getElementById('gameForm');
             const formData = new FormData(form);
+            
+            // Helper to translate radio button values to Hebrew
+            const translateTarget = (value) => {
+                const translations = {
+                    'me': 'לי',
+                    'partner': 'לבן/בת זוג',
+                    'family': 'למשפחה',
+                    'friends': 'לחברים',
+                    'old_friend': 'חבר/ה מהעבר',
+                    'other': 'אחר'
+                };
+                return translations[value] || value;
+            };
+            
+            const translatePlayers = (value) => {
+                const translations = {
+                    '1': '1 (משחק סולו)',
+                    '2': '2',
+                    '2-4': '2-4',
+                    '3-6': '3-6',
+                    '5+': '5+'
+                };
+                return translations[value] || value;
+            };
+            
+            const translateDuration = (value) => {
+                const translations = {
+                    'short': 'עד 30 דקות',
+                    'medium': 'בינוני: 30-60 דקות',
+                    'medium-long': 'בינוני-ארוך: 60-90 דקות',
+                    'long': 'ארוך: 90-120 דקות'
+                };
+                return translations[value] || value;
+            };
+            
+            const translateComplexity = (value) => {
+                const translations = {
+                    'light': 'קליל: חוקים פשוטים, החלטות לא רבות',
+                    'medium': 'בינוני: דורש חשיבה, אך לא מכביד מדי',
+                    'challenging': 'מאתגר: דורש תכנון ואסטרטגיה מעמיקה'
+                };
+                return translations[value] || value;
+            };
+            
+            const translateGenres = (values) => {
+                const translations = {
+                    'strategy': 'אסטרטגיה',
+                    'tactics': 'טקטיקה',
+                    'party': 'מסיבות / חברתי',
+                    'adventure': 'הרפתקאות / חקר',
+                    'economic': 'כלכלי / מסחר',
+                    'negotiation': 'משא ומתן / דיפלומטיה',
+                    'collection': 'איסוף סטים / בניית מנוע',
+                    'deduction': 'דדוקציה / חקירה',
+                    'racing': 'מרוצים',
+                    'cooperative': 'שיתוף פעולה',
+                    'territory': 'שליטה בשטחים',
+                    'roleplay': 'משחק תפקידים',
+                    'dexterity': 'מיומנות / זריזות ידיים',
+                    'storytelling': 'סיפור סיפורים',
+                    'luck': 'מזל / הימורים'
+                };
+                return values.map(v => translations[v] || v);
+            };
+            
+            const translateThemes = (values) => {
+                const translations = {
+                    'fantasy': 'פנטזיה',
+                    'scifi': 'מדע בדיוני',
+                    'history': 'היסטוריה',
+                    'mythology': 'מיתולוגיה',
+                    'horror': 'אימה / מתח',
+                    'comedy': 'קומדיה / הומור',
+                    'realistic': 'חיי יום-יום',
+                    'postapocalyptic': 'פוסט-אפוקליפטי',
+                    'nature': 'טבע ובעלי חיים',
+                    'art': 'אומנות / יצירה',
+                    'sports': 'ספורט',
+                    'culinary': 'קולינריה / אוכל',
+                    'detective': 'בלשות / ריגול',
+                    'western': 'מערב פרוע',
+                    'pirates': 'פיראטים',
+                    'zombies': 'זומבים',
+                    'superheroes': 'גיבורי על',
+                    'surprise': 'הפתיעו אותנו!'
+                };
+                return values.map(v => translations[v] || v);
+            };
+            
+            const translateVisualStyle = (value) => {
+                const translations = {
+                    'modern': 'מודרני / נקי',
+                    'retro': 'רטרו / וינטג\'',
+                    'gothic': 'גותי / אפל',
+                    'cartoon': 'קריקטורי / קומיקס',
+                    'realistic': 'ריאליסטי',
+                    'artnouveau': 'ארט-נובו',
+                    'abstract': 'אבסטרקטי / גאומטרי',
+                    'childlike': 'ילדותי',
+                    'no_preference': 'הפתיעו אותנו!'
+                };
+                return translations[value] || value;
+            };
+            
+            const translateActivities = (values) => {
+                const translations = {
+                    'trips': 'טיולים',
+                    'cooking': 'בישול',
+                    'movies': 'סרטים/סדרות',
+                    'sports': 'ספורט',
+                    'art': 'אומנות/יצירה',
+                    'music': 'מוזיקה'
+                };
+                return values.map(v => translations[v] || v);
+            };
+            
+            const translateDynamics = (values) => {
+                const translations = {
+                    'collaboration': 'שיתוף פעולה הדוק',
+                    'competition': 'תחרותיות בריאה',
+                    'humor': 'הומור הדדי',
+                    'support': 'תמיכה',
+                    'challenge': 'אתגרים משותפים',
+                    'surprise': 'הפתעות ותפניות',
+                    'tension': 'מתח ומרגש',
+                    'interaction': 'אינטראקציה ישירה בין שחקנים',
+                    'bluffing': 'בלוף והטעיה',
+                    'discussion': 'דיון וויכוח',
+                    'progression': 'התקדמות ופיתוח',
+                    'creativity': 'יצירתיות וחשיבה מחוץ לקופסה',
+                    'trading': 'מסחר ומיקוח',
+                    'alliance': 'יצירת בריתות',
+                    'betrayal': 'בגידה (בצורה משחקית)',
+                    'team_play': 'משחק קבוצתי',
+                    'voting': 'הצבעה קבוצתית',
+                    'simultaneous': 'פעולות בו-זמניות',
+                    'risk_taking': 'לקיחת סיכונים מחושבים',
+                    'deduction': 'דדוקציה והיגיון'
+                };
+                return values.map(v => translations[v] || v);
+            };
+
             const result = {
                 basicInfo: {},
                 mechanics: {},
@@ -1300,7 +1470,7 @@
                     items: [],
                     phrases: [],
                     events: [],
-                    activities: {}
+                    activities: []
                 },
                 additionalInfo: {}
             };
@@ -1327,38 +1497,51 @@
             
             const processSingleList = (listType, count) => {
                 const list = [];
-                 for (let i = 1; i <= count; i++) {
+                for (let i = 1; i <= count; i++) {
                     const key = `${listType}_${i}`;
                     const value = formData.get(key);
                     if (value) list.push(value);
-                 }
-                 return list;
-            }
+                }
+                return list;
+            };
 
             // Section 1: Basic Info
-            result.basicInfo.target = formData.get('target');
+            result.basicInfo.target = translateTarget(formData.get('target'));
             result.basicInfo.targetDescription = formData.get('target_description');
-            result.basicInfo.players = formData.get('players') === 'other' ? formData.get('players_other') : formData.get('players');
-            result.basicInfo.duration = formData.get('duration');
+            result.basicInfo.players = formData.get('players') === 'other' 
+                ? formData.get('players_other') 
+                : translatePlayers(formData.get('players'));
+            result.basicInfo.duration = translateDuration(formData.get('duration'));
             result.basicInfo.eventPurpose = formData.get('event_purpose');
 
             // Section 2: Mechanics
-            result.mechanics.complexity = formData.get('complexity');
-            result.mechanics.genres = formData.getAll('genre');
+            result.mechanics.complexity = translateComplexity(formData.get('complexity'));
+            
+            const genres = formData.getAll('genre').filter(g => g !== 'other');
+            result.mechanics.genres = translateGenres(genres);
             if (formData.get('genre_other')) {
-                result.mechanics.genres.push(`Other: ${formData.get('genre_other')}`);
+                result.mechanics.genres.push(`אחר: ${formData.get('genre_other')}`);
             }
 
             // Section 3: Design
-            result.design.themes = formData.getAll('theme');
+            const themes = formData.getAll('theme').filter(t => t !== 'history' && t !== 'unique');
+            result.design.themes = translateThemes(themes);
+            
             if (formData.get('history_period')) {
-                 result.design.themes.push(`History: ${formData.get('history_period')}`);
+                result.design.themes.push(`היסטוריה: ${formData.get('history_period')}`);
             }
             if (formData.get('unique_theme')) {
-                 result.design.themes.push(`Unique: ${formData.get('unique_theme')}`);
+                result.design.themes.push(`נושא ייחודי: ${formData.get('unique_theme')}`);
             }
-            result.design.visualStyle = formData.get('visual_style') === 'other' ? formData.get('visual_style_other') : formData.get('visual_style');
-            result.design.colorPalette = [formData.get('color1'), formData.get('color2'), formData.get('color3')];
+            
+            result.design.visualStyle = formData.get('visual_style') === 'other' 
+                ? formData.get('visual_style_other') 
+                : translateVisualStyle(formData.get('visual_style'));
+            result.design.colorPalette = [
+                formData.get('color1'), 
+                formData.get('color2'), 
+                formData.get('color3')
+            ];
 
             // Section 4: Personalization
             result.personalization.characters = processList('character', document.getElementById('characters-container').children.length, ['name', 'desc']);
@@ -1366,23 +1549,36 @@
             result.personalization.items = processList('item', document.getElementById('items-container').children.length, ['name', 'story']);
             result.personalization.phrases = processSingleList('phrase', document.getElementById('phrases-container').children.length);
             result.personalization.events = processSingleList('event', document.getElementById('events-container').children.length);
-            const activities = formData.getAll('activities');
+            
+            const activities = formData.getAll('activities').filter(a => a !== 'other');
+            result.personalization.activities = translateActivities(activities);
+            
+            // Add activity details
             activities.forEach(activity => {
                 const detailKey = `${activity}_details`;
-                result.personalization.activities[activity] = formData.get(detailKey) || true;
+                const detail = formData.get(detailKey);
+                if (detail) {
+                    const activityName = translateActivities([activity])[0];
+                    result.personalization.activities = result.personalization.activities.map(a => 
+                        a === activityName ? `${activityName}: ${detail}` : a
+                    );
+                }
             });
-             if (formData.get('activities_other')) {
-                result.personalization.activities.other = formData.get('activities_other');
+            
+            if (formData.get('activities_other')) {
+                result.personalization.activities.push(`אחר: ${formData.get('activities_other')}`);
             }
             
             // Section 5: Additional Info
             result.additionalInfo.favoriteGames = formData.get('favorite_games');
+            
             const useNarrative = formData.get('use_narrative') === 'yes';
             result.additionalInfo.narrativeFramework = {
-                useExisting: useNarrative,
+                useExisting: useNarrative ? 'כן' : 'לא',
                 description: useNarrative ? formData.get('narrative_description') : null
             };
-            result.additionalInfo.dynamics = formData.getAll('dynamics');
+            
+            result.additionalInfo.dynamics = translateDynamics(formData.getAll('dynamics'));
             result.additionalInfo.centralMessage = formData.get('central_message');
             result.additionalInfo.avoidances = formData.get('avoidances');
             result.additionalInfo.finalNotes = formData.get('final_notes');
